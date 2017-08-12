@@ -25,6 +25,16 @@ Manually append Microsoft.EntityFrameworkCore.Tools.DotNet to DotNetCliToolRefer
 
     dotnet Build
 
+## Create the database
+
+Run the following command to create initial Migrations
+
+    dotnet ef migrations add InitialCreate
+
+Apply the migration changes to the database
+
+    dotnet ef database update
+
 ## Run it
 
     dotnet run
