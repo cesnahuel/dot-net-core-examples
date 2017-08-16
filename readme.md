@@ -25,7 +25,7 @@ Therefore, manually append `Microsoft.EntityFrameworkCore.Tools.DotNet` to DotNe
 
 (Optional) Build the app
 
-    dotnet Build
+    dotnet build
 
 ## Create the database
 
