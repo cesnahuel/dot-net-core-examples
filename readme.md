@@ -11,11 +11,13 @@
     dotnet add package Microsoft.EntityFrameworkCore.Sqlite
     dotnet add package Microsoft.EntityFrameworkCore.Design
 
-Manually append Microsoft.EntityFrameworkCore.Tools.DotNet to DotNetCliToolReference in dot-net-core-sqlite.csproj file
+EF Core includes an additional set of commands for the dotnet CLI, starting with `dotnet ef`. In order to use the `dotnet ef` CLI commands, your application’s `.csproj` file needs to contain the following entry:
 
     <ItemGroup>
       <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     </ItemGroup>
+
+Therefore, manually append `Microsoft.EntityFrameworkCore.Tools.DotNet` to DotNetCliToolReference in `dot-net-core-sqlite.csproj` file.
 
 ## Download dependencies
 
