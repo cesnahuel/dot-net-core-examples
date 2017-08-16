@@ -1,4 +1,4 @@
-# .Net Core 2.0 SQLite example
+# .Net Core 2.0 examples
 
 ## Create new console based project
 
