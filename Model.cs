@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace DotNetCore.SQLite
 {
@@ -15,6 +17,7 @@ namespace DotNetCore.SQLite
         }
     }
 
+    [Table("customers")]
     public class Customer
     {
         public int CustomerId { get; set; }
@@ -25,6 +28,7 @@ namespace DotNetCore.SQLite
         public List<Purchase> Purchases { get; set; }
     }
 
+    [Table("purchases")]
     public class Purchase
     {
         public int PurchaseId { get; set; }
@@ -34,6 +38,7 @@ namespace DotNetCore.SQLite
         public Customer Customer { get; set; }
     }
 
+    [Table("distributors")]
     public class Distributor
     {
         public int DistributorId { get; set; }
