@@ -20,7 +20,7 @@ namespace Fibonacci
 
         static int DisplayFibonacchiNumbers(Options opts)
         {
-            Console.WriteLine($"Generate {opts.Count} Fibonacci values:");
+            Console.WriteLine($"Generate {opts.Count} Fibonacci value(s):");
             var generator = new FibonacciGenerator();
             IEnumerable<BigInteger> fibRange = generator.Generate(opts.Start + opts.Count)
                 .Skip(Convert.ToInt32(opts.Start));
