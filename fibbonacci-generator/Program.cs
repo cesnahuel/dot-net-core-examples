@@ -1,21 +1,36 @@
-﻿using System;
+using System;
 using System.Numerics;
+using System.Collections.Generic;
+using System.Linq;
+using CommandLine;
 
 
 namespace Fibonacci
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            uint number = 100;
-            Console.WriteLine($"Generate first {number} Fibonacci values:");
+            var parser = Parser.Default.ParseArguments<Options>(args);
+            parser.MapResult(
+                (Options opts) => DisplayFibonacchiNumbers(opts),
+                error => 1
+            );
+        }
+
+        static int DisplayFibonacchiNumbers(Options opts)
+        {
+            Console.WriteLine($"Generate {opts.Count} Fibonacci values:");
             var generator = new FibonacciGenerator();
-            foreach (BigInteger digit in generator.Generate(number))
+            IEnumerable<BigInteger> fibRange = generator.Generate(opts.Start + opts.Count)
+                .Skip(Convert.ToInt32(opts.Start));
+
+            foreach (BigInteger digit in fibRange)
             {
                 Console.Write($"{digit} ");
             }
             Console.Write(System.Environment.NewLine);
+            return 0;
         }
     }
 }
