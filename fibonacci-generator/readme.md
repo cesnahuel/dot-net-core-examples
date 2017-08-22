@@ -1,4 +1,4 @@
-## Generate first 100 Fibonacci numbers
+# Generate first 100 Fibonacci numbers
 
     dotnet run
 
