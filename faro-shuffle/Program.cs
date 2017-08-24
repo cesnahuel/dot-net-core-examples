@@ -10,11 +10,11 @@ namespace FaroShuffle
             var startingDesk =
                 from s in Card.Suits()
                 from r in Card.Ranks()
-                select new { Suit = s, Rank = r };
+                select new Card(s, r);
 
             foreach(var c in startingDesk)
             {
-                Console.WriteLine($"{c.Suit} {c.Rank}");
+                Console.WriteLine(c);
             }
         }
     }

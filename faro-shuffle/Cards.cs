@@ -31,6 +31,17 @@ namespace FaroShuffle
 
     class Card
     {
+        public Suit Suit { get; }
+        public Rank Rank { get; }
+        public Card(Suit s, Rank r)
+        {
+            Suit = s;
+            Rank = r;
+        }
+        public override string ToString()
+        {
+            return $"{Rank} of {Suit}";
+        }
         public static IEnumerable<Suit> Suits() => Enum.GetValues(typeof(Suit)) as IEnumerable<Suit>;
         public static IEnumerable<Rank> Ranks() => Enum.GetValues(typeof(Rank)) as IEnumerable<Rank>;
     }
