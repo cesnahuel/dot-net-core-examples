@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 
@@ -74,6 +75,15 @@ namespace FaroShuffle
                 }
             }
             return true;
+        }
+
+        public static IEnumerable<T> LogQuery<T>(this IEnumerable<T> sequence, string tag)
+        {
+            using (StreamWriter writer = File.AppendText("debug.log"))
+            {
+                writer.WriteLine($"Executing query {tag}");
+            }
+            return sequence;
         }
     }
 }
