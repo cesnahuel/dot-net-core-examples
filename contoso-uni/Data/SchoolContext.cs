@@ -24,9 +24,11 @@ namespace ContosoUniversity.Data
 
         }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=school-store.db");
         }
+        */
     }
 }
