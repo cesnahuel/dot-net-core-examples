@@ -1,10 +1,12 @@
-# Configuration
+# ASP.NET Core MVC example #
+
+## Configuration ##
 
 During development reference the `ASPNETCORE_ENVIRONMENT` environment variable:
 
     env ASPNETCORE_ENVIRONMENT='Development' dotnet watch run
 
-# Scaffold the Controller
+## Scaffold the Controller ##
 
 Make sure the you add the code generation package i.e.
 
