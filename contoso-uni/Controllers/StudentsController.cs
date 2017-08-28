@@ -34,6 +34,9 @@ namespace ContosoUniversity.Controllers
             }
 
             var student = await _context.Students
+                .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Course)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.StudentId == id);
             if (student == null)
             {
@@ -102,7 +105,7 @@ namespace ContosoUniversity.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.StudentId))
+                    if (! await StudentExists(student.StudentId))
                     {
                         return NotFound();
                     }
@@ -145,9 +148,9 @@ namespace ContosoUniversity.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private async Task<bool> StudentExists(int id)
         {
-            return _context.Students.Any(e => e.StudentId == id);
+            return await _context.Students.AnyAsync(e => e.StudentId == id);
         }
     }
 }
