@@ -1,37 +1,43 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace DotNetCore.SQLite
 {
     class Program
     {
-        static void Main(string[] args)
+        public static async Task Main()
         {
-            Console.WriteLine("Hello World!");
             using (var db = new DataStoreContext())
             {
-                // Populate Distributors DB
-                DataStore.distributors.ForEach(dist => {
-                    db.Distributors.Add(dist);
-                });
-                var count = db.SaveChanges();
-                Console.WriteLine($"{count} distributor records saved to database");
+                if (! db.Distributors.Any())
+                {
+                    // Populate Distributors DB
+                    DataStore.distributors.ForEach(dist => {
+                        db.Distributors.Add(dist);
+                    });
+                    var count = await db.SaveChangesAsync();
+                    Console.WriteLine($"{count} distributor records saved to database");
 
-                Console.WriteLine();
+                    Console.WriteLine();
+                }
                 Console.WriteLine("show all distributors in database:");
                 foreach (var dist in db.Distributors)
                 {
                     Console.WriteLine($" - {dist.Name}");
                 }
 
-                DataStore.customers.ForEach(cust => {
-                    db.Customers.Add(cust);
-                });
-                count = db.SaveChanges();
-                Console.WriteLine($"{count} customer records saved to database");
+                if (! db.Customers.Any())
+                {
+                    DataStore.customers.ForEach(cust => {
+                        db.Customers.Add(cust);
+                    });
+                    var count = await db.SaveChangesAsync();
+                    Console.WriteLine($"{count} customer records saved to database");
 
-                Console.WriteLine();
+                    Console.WriteLine();
+                }
                 Console.WriteLine("show all customers in database:");
                 foreach (var cust in db.Customers)
                 {
