@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 
+
 namespace ContosoUniversity.Controllers
 {
     public class StudentsController : Controller
@@ -20,9 +21,15 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortColumn, string sortOrder)
         {
-            return View(await _context.Students.ToListAsync());
+            IQueryable<Student> students =
+                from s in _context.Students
+                select s;
+
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "desc" : sortOrder;
+
+            return View(await students.ToListAsync());
         }
 
         // GET: Student/Details/5
