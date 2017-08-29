@@ -13,6 +13,7 @@ namespace NetMQHelloWorld
             var rand = new Random();
             while (true)
             {
+                // specify one ephemeral port
                 int port = rand.Next(49152, 65535);
                 string address = $"tcp://localhost:{port}";
                 try
