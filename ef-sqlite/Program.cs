@@ -45,7 +45,7 @@ namespace DotNetCore.SQLite
                 }
 
                 Console.WriteLine();
-                Console.WriteLine("show custom LINQ que in database:");
+                Console.WriteLine("show custom LINQ query in database:");
                 var custPurQuery =
                     from c in db.Customers
                     from p in c.Purchases
