@@ -1,13 +1,14 @@
 using ContosoUniversity.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace ContosoUniversity.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(SchoolContext context)
+        public static async Task InitializeAsync(SchoolContext context)
         {
             context.Database.EnsureCreated();
 
@@ -32,7 +33,7 @@ namespace ContosoUniversity.Data
             {
                 context.Students.Add(s);
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var courses = new Course[]
             {
@@ -48,7 +49,7 @@ namespace ContosoUniversity.Data
             {
                 context.Courses.Add(c);
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var enrollments = new Enrollment[]
             {
@@ -69,7 +70,7 @@ namespace ContosoUniversity.Data
             {
                 context.Enrollments.Add(e);
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ContosoUniversity
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             IWebHost host = BuildWebHost(args);
             using (IServiceScope scope = host.Services.CreateScope())
@@ -24,7 +24,7 @@ namespace ContosoUniversity
                 try
                 {
                     SchoolContext context = services.GetRequiredService<SchoolContext>();
-                    DbInitializer.Initialize(context);
+                    await DbInitializer.InitializeAsync(context);
                 }
                 catch (Exception exception)
                 {
@@ -32,7 +32,7 @@ namespace ContosoUniversity
                     logger.LogError(exception, "An error occured while seeding the database.");
                 }
             }
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
