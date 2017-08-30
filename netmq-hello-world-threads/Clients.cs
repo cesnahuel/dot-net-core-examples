@@ -16,7 +16,7 @@ namespace NetMQHelloWorldThreads
             this.clientName = clientName;
         }
 
-        public Task Run() => Task.Run(() =>
+        public Task RunAsync() => Task.Run(() =>
         {
             using (RequestSocket client = new RequestSocket())
             {
@@ -25,9 +25,9 @@ namespace NetMQHelloWorldThreads
                 client.Connect("tcp://localhost:5556");
                 while (true)
                 {
-                    client.SendFrame($"Hello from client {clientName}");
+                    client.SendFrame($"Hello from client {clientName} on {DateTime.Now.ToString("HH:mm:ss.fff")}");
                     string reply = client.ReceiveFrameString();
-                    Console.WriteLine($"From server: '{reply}' running on thread id {Thread.CurrentThread.ManagedThreadId}");
+                    Console.WriteLine($"Client: received from server '{reply}' running on thread id {Thread.CurrentThread.ManagedThreadId}");
                     Thread.Sleep(5000);
                 }
             }

@@ -9,17 +9,16 @@ namespace NetMQHelloWorldThreads
 {
     sealed class Server
     {
-        public Task Run() => Task.Run(() => {
+        public Task RunAsync() => Task.Run(() => {
             using (ResponseSocket server = new ResponseSocket())
             {
                 Console.WriteLine("Startig server");
 
                 server.Bind("tcp://localhost:5556");
-
                 while (true) {
                     string request = server.ReceiveFrameString();
-                    Console.WriteLine($"From Client: '{request}' running on thead id {Thread.CurrentThread.ManagedThreadId}");
-                    server.SendFrame("response back!");
+                    Console.WriteLine($"Server: received '{request}' running on thread id {Thread.CurrentThread.ManagedThreadId}");
+                    server.SendFrame($"Hi back! on {DateTime.Now.ToString("HH:mm:ss.fff")}");
                 }
             }
         });
