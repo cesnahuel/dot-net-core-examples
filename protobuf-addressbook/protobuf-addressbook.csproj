@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <Target Name="ProtobufTarget" BeforeTargets="Build">
+    <Exec Command="protoc --proto_path=Protobuf --csharp_out=Protobuf AddressBook.proto" />
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.4.0" />
+  </ItemGroup>
+</Project>
