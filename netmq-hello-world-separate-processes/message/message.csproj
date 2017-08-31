@@ -3,6 +3,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <Target Name="ProtobufTarget" BeforeTargets="Build">
+    <Exec Command="protoc --proto_path=Protobuf --csharp_out=Protobuf Message.proto" />
+  </Target>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.4.0" />
   </ItemGroup>
