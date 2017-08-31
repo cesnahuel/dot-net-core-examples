@@ -1,4 +1,4 @@
-# NetMQ Hello World exmple with separate proceses #
+# NetMQ Hello World example with separate proceses #
 
 Create solution to organize multiple projects
 
