@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option csharp_namespace = "NetMQHelloWorld.Message";
+
+message Message {
+    int64 timestamp = 1;
+    string name = 2;
+    string body = 2;
+}
+
