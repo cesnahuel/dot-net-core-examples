@@ -7,17 +7,14 @@ namespace CommandPattern
         {
             _node = node;
         }
-
         public override T Compute()
         {
             return _node.Compute();
         }
-
         public override string ToString()
         {
             return $"({_node})";
         }
-
         public INode<T> Node
         {
             get

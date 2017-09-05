@@ -1,22 +1,20 @@
 namespace CommandPattern
 {
-    class DecimalValue : INode<decimal>
+    class Value<T> : INode<T>
     {
-        decimal _value;
-        public DecimalValue(decimal @value)
+        private T _value;
+        public Value(T @value)
         {
             _value = @value;
         }
-
-        public override decimal Compute()
+        public override T Compute()
         {
             return _value;
         }
 
         public override string ToString()
         {
-            return $"{_value:0.3}";
+            return $"{_value}";
         }
-
     }
 }
