@@ -1,11 +1,11 @@
 namespace CommandPattern
 {
-    class CalculatorCommnad : ICommand
+    class CalculatorCommnad<T> : ICommand
     {
         private char _operator;
         private int _operand;
-        private ICalculator _calculator;
-        public CalculatorCommnad(Calculator calculator, char @operator, int operand)
+        private ICalculator<T> _calculator;
+        public CalculatorCommnad(ICalculator<T> calculator, char @operator, int operand)
         {
             _calculator = calculator;
             _operator = @operator;

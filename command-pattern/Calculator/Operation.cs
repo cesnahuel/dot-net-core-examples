@@ -2,7 +2,7 @@ using System;
 
 namespace CommandPattern
 {
-    public class Operation<T> : INode<T>
+    public abstract class Operation<T> : INode<T>
     {
         protected INode<T> _left;
         protected INode<T> _right;
@@ -20,7 +20,7 @@ namespace CommandPattern
         {
             _operand = operand;
         }
-        public override T Compute() => throw new NotSupportedException();
+        public abstract T Compute();
         public override string ToString()
         {
             return $"{_left} {_operand} {_right}";

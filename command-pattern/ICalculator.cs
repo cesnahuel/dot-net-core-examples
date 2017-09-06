@@ -1,7 +1,8 @@
 namespace CommandPattern
 {
-    internal interface ICalculator
+    internal interface ICalculator<T>
     {
-        decimal Compute();
+        T Compute();
+        void Operation(INode<T> node);
     }
 }

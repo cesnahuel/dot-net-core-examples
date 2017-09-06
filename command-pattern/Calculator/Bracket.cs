@@ -7,7 +7,7 @@ namespace CommandPattern
         {
             _node = node;
         }
-        public override T Compute()
+        public T Compute()
         {
             return _node.Compute();
         }
