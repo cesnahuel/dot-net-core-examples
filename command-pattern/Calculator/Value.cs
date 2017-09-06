@@ -7,6 +7,11 @@ namespace CommandPattern
         {
             _value = value;
         }
+        // Set default value in default constructor
+        public Value()
+        {
+            _value = default(T);
+        }
         public T Compute()
         {
             return _value;

@@ -1,23 +1,31 @@
+using System;
+
+
 namespace CommandPattern
 {
     class CalculatorCommnad<T> : ICommand
     {
-        private char _operator;
-        private int _operand;
+        private INode<T> _newOperation;
+        private INode<T> _oldOperation;
         private ICalculator<T> _calculator;
-        public CalculatorCommnad(ICalculator<T> calculator, char @operator, int operand)
+        public CalculatorCommnad(ICalculator<T> calculator, INode<T> operation)
         {
             _calculator = calculator;
-            _operator = @operator;
-            _operand = operand;
+            _newOperation = operation;
+            _oldOperation = _calculator.CurrentOperation;
         }
-
         public void Execute()
         {
+            ShowCalculation(_newOperation);
         }
-
         public void UnExecute()
         {
+            ShowCalculation(_oldOperation);
+        }
+        private void ShowCalculation(INode<T> operation)
+        {
+            _calculator.SetOperation(operation);
+            Console.WriteLine($"compute {_calculator} {_calculator.Compute()}");
         }
     }
 }

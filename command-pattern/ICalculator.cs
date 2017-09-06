@@ -2,7 +2,8 @@ namespace CommandPattern
 {
     internal interface ICalculator<T>
     {
+        INode<T> CurrentOperation { get; }
         T Compute();
-        void Operation(INode<T> node);
+        INode<T> SetOperation(INode<T> node);
     }
 }

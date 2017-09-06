@@ -2,17 +2,32 @@ namespace CommandPattern
 {
     class Calculator<T> : ICalculator<T>
     {
-        private INode<T> _node;
+        private INode<T> _operation;
         public Calculator()
         {
+            // initialize default value
+            _operation = new Value<T>();
         }
         public T Compute()
         {
-            return _node.Compute();
+            return _operation.Compute();
         }
-        public void Operation(INode<T> node)
+        public override string ToString()
         {
-            _node = node;
+            return _operation.ToString();
+        }
+        public INode<T> SetOperation(INode<T> operation)
+        {
+            INode<T> previous = _operation;
+            _operation = operation;
+            return previous;
+        }
+        public INode<T> CurrentOperation
+        {
+            get
+            {
+                return _operation;
+            }
         }
     }
 }
