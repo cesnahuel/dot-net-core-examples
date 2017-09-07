@@ -4,6 +4,6 @@ namespace CommandPattern
     {
         INode<T> CurrentOperation { get; }
         T Compute();
-        INode<T> SetOperation(INode<T> node);
+        INode<T> SetOperation(INode<T> operation);
     }
 }

@@ -25,7 +25,7 @@ namespace CommandPattern
         private void ShowCalculation(INode<T> operation)
         {
             _calculator.SetOperation(operation);
-            Console.WriteLine($"compute {_calculator} {_calculator.Compute()}");
+            Console.WriteLine($"expression '{_calculator}' evaluation {_calculator.Compute()}");
         }
     }
 }

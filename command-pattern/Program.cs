@@ -22,6 +22,12 @@ namespace CommandPattern
             Bracket<DecimalVal> SubBra = new Bracket<DecimalVal>(SubOp);
             MultiplyOperation<DecimalVal> MulOp = new MultiplyOperation<DecimalVal>(AddBra, SubBra);
             Console.WriteLine($"compute {MulOp} = {MulOp.Compute()}");
+
+            User<DoubleVal> user = new User<DoubleVal>();
+            //user.SetValue(3.14);
+            user.Apply(Operation.ADD, 0.14);
+            user.Apply(Operation.ADD, 1.06);
+            user.Apply(Operation.MULTIPLY, 3.14);
         }
     }
 }

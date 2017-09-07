@@ -1,5 +1,6 @@
 using System;
 
+
 namespace CommandPattern
 {
     public abstract class Operation<T> : INode<T>

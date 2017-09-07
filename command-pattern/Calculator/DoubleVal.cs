@@ -1,32 +1,32 @@
 namespace CommandPattern
 {
-    public struct DecimalVal : INumeric<DecimalVal>
+    public struct DoubleVal : INumeric<DoubleVal>
     {
-        private decimal _value;
-        public DecimalVal(decimal value)
+        private double _value;
+        public DoubleVal(double value)
         {
             _value = value;
         }
-        static public implicit operator DecimalVal(decimal value)
+        static public implicit operator DoubleVal(double value)
         {
-            return new DecimalVal(value);
+            return new DoubleVal(value);
         }
-        public DecimalVal Add(DecimalVal that)
+        public DoubleVal Add(DoubleVal that)
         {
             _value += that._value;
             return this;
         }
-        public DecimalVal Subtract(DecimalVal that)
+        public DoubleVal Subtract(DoubleVal that)
         {
             _value -= that._value;
             return this;
         }
-        public DecimalVal Multiply(DecimalVal that)
+        public DoubleVal Multiply(DoubleVal that)
         {
             _value *= that._value;
             return this;
         }
-        public DecimalVal Divide(DecimalVal that)
+        public DoubleVal Divide(DoubleVal that)
         {
             _value /= that._value;
             return this;
