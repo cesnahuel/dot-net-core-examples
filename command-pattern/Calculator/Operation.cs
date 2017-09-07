@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 
 namespace CommandPattern
@@ -24,7 +25,23 @@ namespace CommandPattern
         public abstract T Compute();
         public override string ToString()
         {
-            return $"{_left} {_operand} {_right}";
+            string [] multiplyOrDivide = { "*", "/" };
+            string left = $"{_left}";
+            string right = $"{_right}";
+            if (multiplyOrDivide.Any(o => o == _operand))
+            {
+                string [] addOrSubstract = { "+", "-" };
+                if (addOrSubstract.Any(o => o == (_left as Operation<T>)?._operand))
+                {
+                    left = $"[{_left}]";
+                }
+                if (addOrSubstract.Any(o => o == (_right as Operation<T>)?._operand))
+                {
+                    right = $"[{_right}]";
+                }
+
+            }
+            return $"{left} {_operand} {right}";
         }
         public INode<T> LeftNode
         {

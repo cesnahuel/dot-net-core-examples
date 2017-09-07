@@ -18,9 +18,10 @@ namespace CommandPattern
             SubtractOperation<DecimalVal> SubOp = new SubtractOperation<DecimalVal>(V1, V2);
             Console.WriteLine($"compute {SubOp} = {SubOp.Compute()}");
 
-            Bracket<DecimalVal> AddBra = new Bracket<DecimalVal>(AddOp);
-            Bracket<DecimalVal> SubBra = new Bracket<DecimalVal>(SubOp);
-            MultiplyOperation<DecimalVal> MulOp = new MultiplyOperation<DecimalVal>(AddBra, SubBra);
+            //Bracket<DecimalVal> AddBra = new Bracket<DecimalVal>(AddOp);
+            //Bracket<DecimalVal> SubBra = new Bracket<DecimalVal>(SubOp);
+            //MultiplyOperation<DecimalVal> MulOp = new MultiplyOperation<DecimalVal>(AddBra, SubBra);
+            MultiplyOperation<DecimalVal> MulOp = new MultiplyOperation<DecimalVal>(AddOp, SubOp);
             Console.WriteLine($"compute {MulOp} = {MulOp.Compute()}");
 
             User<DoubleVal> user = new User<DoubleVal>();
