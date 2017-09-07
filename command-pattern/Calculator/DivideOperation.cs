@@ -2,7 +2,7 @@ namespace CommandPattern
 {
     public class DivideOperation<T> : Operation<T> where T : INumeric<T>
     {
-        public DivideOperation() : base("/")
+        public DivideOperation() : base(Operation.DIVIDE)
         {
         }
 

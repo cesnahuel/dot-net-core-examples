@@ -8,8 +8,8 @@ namespace CommandPattern
     {
         protected INode<T> _left;
         protected INode<T> _right;
-        private string _operand;
-        public Operation(string operand)
+        private Operation _operand;
+        public Operation(Operation operand)
         {
             _operand = operand;
         }
@@ -18,19 +18,19 @@ namespace CommandPattern
             _left = left;
             _right = right;
         }
-        public Operation(INode<T> left, INode<T> right, string operand) : this(left, right)
+        public Operation(INode<T> left, INode<T> right, Operation operand) : this(left, right)
         {
             _operand = operand;
         }
         public abstract T Compute();
         public override string ToString()
         {
-            string [] multiplyOrDivide = { "*", "/" };
+            Operation [] multiplyOrDivide = { Operation.MULTIPLY, Operation.DIVIDE };
             string left = $"{_left}";
             string right = $"{_right}";
             if (multiplyOrDivide.Any(o => o == _operand))
             {
-                string [] addOrSubstract = { "+", "-" };
+                Operation [] addOrSubstract = { Operation.ADD, Operation.SUBTRACT };
                 if (addOrSubstract.Any(o => o == (_left as Operation<T>)?._operand))
                 {
                     left = $"[{_left}]";
@@ -41,7 +41,7 @@ namespace CommandPattern
                 }
 
             }
-            return $"{left} {_operand} {right}";
+            return $"{left} {_operand.ToString(true)} {right}";
         }
         public INode<T> LeftNode
         {

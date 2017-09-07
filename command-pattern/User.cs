@@ -10,6 +10,18 @@ namespace CommandPattern
         MULTIPLY,
         DIVIDE
     }
+    public static class OperationExtention
+    {
+        public static string ToString(this Operation operation, bool @switch)
+        {
+            if (@switch)
+            {
+                string [] names = { "+", "-", "*", "/" };
+                return names[(int)operation];
+            }
+            return $"{operation}";
+        }
+    }
     public class User<T> where T : INumeric<T>
     {
         private ICalculator<T> _calculator;
