@@ -1,6 +1,9 @@
+using System;
+
+
 namespace CommandPattern
 {
-    public struct DoubleVal : INumeric<DoubleVal>
+    public struct DoubleVal : INumeric<DoubleVal>, ITrigonometry<DoubleVal>
     {
         private double _value;
         public DoubleVal(double value)
@@ -10,6 +13,10 @@ namespace CommandPattern
         static public implicit operator DoubleVal(double value)
         {
             return new DoubleVal(value);
+        }
+        public static implicit operator double(DoubleVal digit)
+        {
+            return digit._value;
         }
         public DoubleVal Add(DoubleVal that)
         {
@@ -34,6 +41,14 @@ namespace CommandPattern
         public override string ToString()
         {
             return $"{_value}";
+        }
+    }
+
+    public static class TrigonometryExtentions
+    {
+        public static DoubleVal Sin(this ITrigonometry<DoubleVal> value)
+        {
+            return Math.Sin((DoubleVal)value);
         }
     }
 }

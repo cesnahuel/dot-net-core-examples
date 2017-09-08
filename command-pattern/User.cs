@@ -8,7 +8,11 @@ namespace CommandPattern
         ADD,
         SUBTRACT,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
+        SIN,
+        COS,
+        SQRT,
+        POW
     }
     public static class OperationExtention
     {
@@ -16,7 +20,7 @@ namespace CommandPattern
         {
             if (@switch)
             {
-                string [] names = { "+", "-", "*", "/" };
+                string [] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow" };
                 return names[(int)operation];
             }
             return $"{operation}";

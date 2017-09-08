@@ -1,6 +1,6 @@
 namespace CommandPattern
 {
-    class Value<T> : INode<T>
+    class Value<T> : INode<T> //where T : INumeric<T>
     {
         private T _value;
         public Value(T value)

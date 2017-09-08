@@ -4,25 +4,20 @@ using System.Linq;
 
 namespace CommandPattern
 {
-    public abstract class Operation<T> : INode<T>
+    public abstract class Operation<T> : SingleOperation<T>
     {
         protected INode<T> _left;
-        protected INode<T> _right;
-        private Operation _operand;
-        public Operation(Operation operand)
+        public Operation(Operation operand) : base(operand)
         {
-            _operand = operand;
         }
-        public Operation(INode<T> left, INode<T> right)
+        public Operation(INode<T> left, INode<T> right) : base(right)
         {
             _left = left;
-            _right = right;
         }
         public Operation(INode<T> left, INode<T> right, Operation operand) : this(left, right)
         {
             _operand = operand;
         }
-        public abstract T Compute();
         public override string ToString()
         {
             Operation [] multiplyOrDivide = { Operation.MULTIPLY, Operation.DIVIDE };
@@ -52,17 +47,6 @@ namespace CommandPattern
             set
             {
                 _left = value;
-            }
-        }
-        public INode<T> RightNode
-        {
-            get
-            {
-                return _right;
-            }
-            set
-            {
-                _right = value;
             }
         }
     }

@@ -3,6 +3,8 @@ namespace CommandPattern
     public struct DecimalVal : INumeric<DecimalVal>
     {
         private decimal _value;
+        //public DecimalVal() : this(0)
+        //{}
         public DecimalVal(decimal value)
         {
             _value = value;
@@ -11,10 +13,13 @@ namespace CommandPattern
         {
             return new DecimalVal(value);
         }
+        static public implicit operator decimal(DecimalVal digit)
+        {
+            return digit._value;
+        }
         public DecimalVal Add(DecimalVal that)
         {
-            _value += that._value;
-            return this;
+            return decimal.Add(this, that);
         }
         public DecimalVal Subtract(DecimalVal that)
         {
