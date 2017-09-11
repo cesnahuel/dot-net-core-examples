@@ -3,8 +3,10 @@ using System;
 
 namespace CommandPattern
 {
-    public interface IFactory
-    {}
+    public interface IFactory<T>
+    {
+        INode<T> GetValue(T value);
+    }
 
     public interface IMethod
     {
@@ -46,7 +48,7 @@ namespace CommandPattern
         }
     }
 
-    public class GenericFactory<T> : IFactory
+    public class GenericFactory<T> : IFactory<T>
     {
         public GenericFactory()
         {
