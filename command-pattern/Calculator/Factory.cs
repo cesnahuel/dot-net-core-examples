@@ -8,13 +8,21 @@ namespace CommandPattern
         INode<T> GetValue(T value);
     }
 
+    public interface INumericFactory<T> : IFactory<T>
+    {
+        INode<T> GetAddOperation(INode<T> first, INode<T> second);
+        INode<T> GetSubtractOperation(INode<T> first, INode<T> second);
+        INode<T> GetMultiplyOperation(INode<T> first, INode<T> second);
+        INode<T> GetDivideOperation(INode<T> first, INode<T> second);
+    }
+
     public interface IMethod
     {
         Operation Operation { get; set; }
     }
     public interface ISingleMethod<T> : IMethod
     {
-        T Method(T first);
+        T Call(T first);
     }
     public interface IDoubleMethod<T> : IMethod
     {
@@ -57,33 +65,6 @@ namespace CommandPattern
         {
             INode<T> valueNode = new Value<T>(value);
             return valueNode;
-        }
-    }
-
-    public class DecimalFactory : GenericFactory<decimal>
-    {
-        public DecimalFactory()
-        {
-        }
-        public INode<decimal> GetAddOperation(INode<decimal> first, INode<decimal> second)
-        {
-            DoubleMethod<decimal> add = new DoubleMethod<decimal>(Operation.ADD, (decimal one, decimal two) => one + two);
-            return new Operation<decimal>(add, first, second);
-        }
-        public INode<decimal> GetSubstractOperation(INode<decimal> first, INode<decimal> second)
-        {
-            DoubleMethod<decimal> substract = new DoubleMethod<decimal>(Operation.SUBTRACT, (decimal one, decimal two) => one - two);
-            return new Operation<decimal>(substract, first, second);
-        }
-        public INode<decimal> GetMultiplyOperation(INode<decimal> first, INode<decimal> second)
-        {
-            DoubleMethod<decimal> multiply = new DoubleMethod<decimal>(Operation.MULTIPLY, (decimal one, decimal two) => one * two);
-            return new Operation<decimal>(multiply, first, second);
-        }
-        public INode<decimal> GetDiviveOperation(INode<decimal> first, INode<decimal> second)
-        {
-            DoubleMethod<decimal> divide = new DoubleMethod<decimal>(Operation.DIVIDE, (decimal one, decimal two) => one / two);
-            return new Operation<decimal>(divide, first, second);
         }
     }
 }

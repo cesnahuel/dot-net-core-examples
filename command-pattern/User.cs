@@ -5,39 +5,33 @@ namespace CommandPattern
 {
     public enum Operation
     {
-        ADD,
-        SUBTRACT,
-        MULTIPLY,
-        DIVIDE,
-        SIN,
-        COS,
-        SQRT,
-        POW
+        ADD, SUBTRACT, MULTIPLY, DIVIDE, SIN, COS, SQRT, POW
     }
     public static class OperationExtention
     {
+        private static string[] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow" };
         public static string ToString(this Operation operation, bool @switch)
         {
             if (@switch)
             {
-                string [] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow" };
                 return names[(int)operation];
             }
             return $"{operation}";
         }
     }
-    public class User<T> where T : INumeric<T>, new()
+    public class User<T> where T : new()
     {
         private ICalculator<T> _calculator;
         private uint _level;
         private LinkedList<ICommand> _history;
-        public User()
+        private IFactory<T> _factory;
+        public User(IFactory<T> factory)
         {
             _calculator = new Calculator<T>();
             _history = new LinkedList<ICommand>();
             _level = 0;
+            _factory = factory;
         }
-
         public void SetValue(T value)
         {
             INode<T> operation = new Value<T>(value);
@@ -46,23 +40,26 @@ namespace CommandPattern
             _level++;
             _history.AddLast(command);
         }
-
         public void Apply(Operation operation, INode<T> right)
         {
-            Operation<T> node = null;
+            INode<T> node = null;
             switch(operation)
             {
                 case Operation.ADD:
+                    node = (_factory as INumericFactory<T>).GetAddOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.MULTIPLY:
+                    node = (_factory as INumericFactory<T>).GetMultiplyOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.DIVIDE:
+                    node = (_factory as INumericFactory<T>).GetDivideOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.SUBTRACT:
+                    node = (_factory as INumericFactory<T>).GetSubtractOperation(_calculator.CurrentOperation, right);
                     break;
             }
-            node.LeftNode = _calculator.CurrentOperation;
-            node.RightNode = right;
+            //node.LeftNode = _calculator.CurrentOperation;
+            //node.RightNode = right;
             ICommand command = new CalculatorCommnad<T>(_calculator, node);
             command.Execute();
             _level++;
