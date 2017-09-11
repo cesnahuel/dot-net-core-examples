@@ -53,16 +53,12 @@ namespace CommandPattern
             switch(operation)
             {
                 case Operation.ADD:
-                    node = new AddOperation<T>();
                     break;
                 case Operation.MULTIPLY:
-                    node = new MultiplyOperation<T>();
                     break;
                 case Operation.DIVIDE:
-                    node = new DivideOperation<T>();
                     break;
                 case Operation.SUBTRACT:
-                    node = new SubtractOperation<T>();
                     break;
             }
             node.LeftNode = _calculator.CurrentOperation;
