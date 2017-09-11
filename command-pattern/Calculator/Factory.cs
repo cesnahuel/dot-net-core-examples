@@ -16,6 +16,18 @@ namespace CommandPattern
         INode<T> GetDivideOperation(INode<T> first, INode<T> second);
     }
 
+    public interface ITrigonometryFactory<T> : IFactory<T>
+    {
+        INode<T> GetSinOperation(INode<T> first);
+        INode<T> GetCosOperation(INode<T> first);
+    }
+
+    public interface IFunctionFactory<T> : IFactory<T>
+    {
+        INode<T> GetPow2Operation(INode<T> first);
+        INode<T> GetPowOperation(INode<T> first, INode<T> second);
+    }
+
     public interface IMethod
     {
         Operation Operation { get; set; }
@@ -55,7 +67,32 @@ namespace CommandPattern
             return _operation.ToString(true);
         }
     }
-
+    public class SingleMethod<T> : ISingleMethod<T>
+    {
+        private Operation _operation;
+        private Func<T, T> _method;
+        public SingleMethod(Operation operation, Func<T, T> method)
+        {
+            _operation = operation;
+            _method = method;
+        }
+        public T Call(T first) => _method(first);
+        public Operation Operation
+        {
+            get
+            {
+                return _operation;
+            }
+            set
+            {
+                _operation = value;
+            }
+        }
+        public override string ToString()
+        {
+            return _operation.ToString(true);
+        }
+    }
     public class GenericFactory<T> : IFactory<T> where T : new()
     {
         public GenericFactory()

@@ -1,6 +1,9 @@
+using System;
+
+
 namespace CommandPattern
 {
-    public class DoubleFactory : GenericFactory<double>, INumericFactory<double>
+    public class DoubleFactory : GenericFactory<double>, INumericFactory<double>, ITrigonometryFactory<double>, IFunctionFactory<double>
     {
         public DoubleFactory()
         {
@@ -25,13 +28,25 @@ namespace CommandPattern
             DoubleMethod<double> divide = new DoubleMethod<double>(Operation.DIVIDE, (double one, double two) => one / two);
             return new Operation<double>(divide, first, second);
         }
-    }
-
-    public static class DoubleFactoryExtentions
-    {
-        public static INode<double> GetAddOperation(this IFactory<double> factory, INode<double> first, INode<double> second)
+        public INode<double> GetSinOperation(INode<double> first)
         {
-            return (factory as DoubleFactory).GetAddOperation(first, second);
+            SingleMethod<double> sin = new SingleMethod<double>(Operation.SIN, (double one) => Math.Sin(one));
+            return new SingleOperation<double>(sin, first);
+        }
+        public INode<double> GetCosOperation(INode<double> first)
+        {
+            SingleMethod<double> cos = new SingleMethod<double>(Operation.COS, (double one) => Math.Cos(one));
+            return new SingleOperation<double>(cos, first);
+        }
+        public INode<double> GetPow2Operation(INode<double> first)
+        {
+            SingleMethod<double> pow2 = new SingleMethod<double>(Operation.POW2, (double one) => Math.Pow(one, 2.0));
+            return new SingleOperation<double>(pow2, first);
+        }
+        public INode<double> GetPowOperation(INode<double> first, INode<double> second)
+        {
+            DoubleMethod<double> pow = new DoubleMethod<double>(Operation.POW, (double one, double two) => Math.Pow(one, two));
+            return new Operation<double>(pow, first, second);
         }
     }
 }

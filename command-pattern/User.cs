@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System;
 
 
 namespace CommandPattern
 {
     public enum Operation
     {
-        ADD, SUBTRACT, MULTIPLY, DIVIDE, SIN, COS, SQRT, POW
+        ADD, SUBTRACT, MULTIPLY, DIVIDE, SIN, COS, SQRT, POW, POW2
     }
     public static class OperationExtention
     {
-        private static string[] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow" };
+        private static string[] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow", "pow2" };
         public static string ToString(this Operation operation, bool @switch)
         {
             if (@switch)
@@ -46,20 +47,25 @@ namespace CommandPattern
             switch(operation)
             {
                 case Operation.ADD:
-                    node = (_factory as INumericFactory<T>).GetAddOperation(_calculator.CurrentOperation, right);
+                    node = (_factory as INumericFactory<T>)?.GetAddOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.MULTIPLY:
-                    node = (_factory as INumericFactory<T>).GetMultiplyOperation(_calculator.CurrentOperation, right);
+                    node = (_factory as INumericFactory<T>)?.GetMultiplyOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.DIVIDE:
-                    node = (_factory as INumericFactory<T>).GetDivideOperation(_calculator.CurrentOperation, right);
+                    node = (_factory as INumericFactory<T>)?.GetDivideOperation(_calculator.CurrentOperation, right);
                     break;
                 case Operation.SUBTRACT:
-                    node = (_factory as INumericFactory<T>).GetSubtractOperation(_calculator.CurrentOperation, right);
+                    node = (_factory as INumericFactory<T>)?.GetSubtractOperation(_calculator.CurrentOperation, right);
+                    break;
+                case Operation.SIN:
+                    node = (_factory as ITrigonometryFactory<T>)?.GetSinOperation(_calculator.CurrentOperation);
                     break;
             }
-            //node.LeftNode = _calculator.CurrentOperation;
-            //node.RightNode = right;
+            if (node == null)
+            {
+                throw new NotImplementedException($"No suitable implementation found for '{operation}' in the factory");
+            }
             ICommand command = new CalculatorCommnad<T>(_calculator, node);
             command.Execute();
             _level++;
@@ -69,6 +75,27 @@ namespace CommandPattern
         {
             INode<T> value = new Value<T>(right);
             Apply(operation, value);
+        }
+        public void Apply(Operation operation)
+        {
+            INode<T> node = null;
+            switch(operation)
+            {
+                case Operation.SIN:
+                    node = (_factory as ITrigonometryFactory<T>)?.GetSinOperation(_calculator.CurrentOperation);
+                    break;
+                case Operation.COS:
+                    node = (_factory as ITrigonometryFactory<T>)?.GetCosOperation(_calculator.CurrentOperation);
+                    break;
+            }
+            if (node == null)
+            {
+                throw new NotImplementedException($"No suitable implementation found for '{operation}' in the factory");
+            }
+            ICommand command = new CalculatorCommnad<T>(_calculator, node);
+            command.Execute();
+            _level++;
+            _history.AddLast(command);
         }
     }
 }
