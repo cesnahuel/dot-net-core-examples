@@ -26,7 +26,7 @@ namespace CommandPattern
             return $"{operation}";
         }
     }
-    public class User<T> where T : INumeric<T>
+    public class User<T> where T : INumeric<T>, new()
     {
         private ICalculator<T> _calculator;
         private uint _level;

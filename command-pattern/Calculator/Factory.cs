@@ -48,7 +48,7 @@ namespace CommandPattern
         }
     }
 
-    public class GenericFactory<T> : IFactory<T>
+    public class GenericFactory<T> : IFactory<T> where T : new()
     {
         public GenericFactory()
         {

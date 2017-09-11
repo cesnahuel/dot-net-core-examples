@@ -1,6 +1,6 @@
 namespace CommandPattern
 {
-    class Calculator<T> : ICalculator<T> where T : INumeric<T>
+    class Calculator<T> : ICalculator<T> where T : INumeric<T>, new()
     {
         private INode<T> _operation;
         public Calculator()

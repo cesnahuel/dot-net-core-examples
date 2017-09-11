@@ -1,6 +1,6 @@
 namespace CommandPattern
 {
-    class Value<T> : INode<T> //where T : INumeric<T>
+    class Value<T> : INode<T> where T : new()
     {
         private T _value;
         public Value(T value)
@@ -10,7 +10,7 @@ namespace CommandPattern
         // Set default value in default constructor
         public Value()
         {
-            _value = default(T);
+            _value = new T();
         }
         public T Compute()
         {
