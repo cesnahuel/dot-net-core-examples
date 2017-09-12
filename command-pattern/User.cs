@@ -11,6 +11,8 @@ namespace CommandPattern
     public static class OperationExtention
     {
         private static string[] names = { "+", "-", "*", "/", "sin", "cos", "sqrt", "pow", "pow2" };
+        private static string[] formats = { "{0} + {1}", " {0} - {1}", " {0} * {1}", "{0} / {1}", "sin({0})", "cos({0})", "sqrt({0})", "({0})^{1}", "({0})^2" };
+        /*
         public static string ToString(this Operation operation, bool @switch)
         {
             if (@switch)
@@ -18,6 +20,15 @@ namespace CommandPattern
                 return names[(int)operation];
             }
             return $"{operation}";
+        }
+        */
+        public static string Representation(this Operation operation, string first)
+        {
+            return String.Format(formats[(int)operation], first);
+        }
+        public static string Representation(this Operation operation, string first, string second)
+        {
+            return String.Format(formats[(int)operation], first, second);
         }
     }
     public class User<T> where T : new()

@@ -44,7 +44,7 @@ namespace CommandPattern
                 }
 
             }
-            return $"{left} {_method} {right}";
+            return _method.ToString(left, right);
         }
         public INode<T> LeftNode
         {

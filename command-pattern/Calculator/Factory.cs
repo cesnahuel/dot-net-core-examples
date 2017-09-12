@@ -35,10 +35,12 @@ namespace CommandPattern
     public interface ISingleMethod<T> : IMethod
     {
         T Call(T first);
+        string ToString(string first);
     }
     public interface IDoubleMethod<T> : IMethod
     {
         T Call(T first, T second);
+        string ToString(string first, string second);
     }
 
     public class DoubleMethod<T> : IDoubleMethod<T>
@@ -62,9 +64,14 @@ namespace CommandPattern
                 _operation = value;
             }
         }
+        /*
         public override string ToString()
         {
             return _operation.ToString(true);
+        }*/
+        public string ToString(string first, string second)
+        {
+            return _operation.Representation(first, second);
         }
     }
     public class SingleMethod<T> : ISingleMethod<T>
@@ -88,9 +95,14 @@ namespace CommandPattern
                 _operation = value;
             }
         }
+        /*
         public override string ToString()
         {
             return _operation.ToString(true);
+        }*/
+        public string ToString(string first)
+        {
+            return _operation.Representation(first);
         }
     }
     public class GenericFactory<T> : IFactory<T> where T : new()

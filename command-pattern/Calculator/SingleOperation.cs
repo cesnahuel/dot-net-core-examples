@@ -25,7 +25,7 @@ namespace CommandPattern
         }
         public override string ToString()
         {
-            return $"{_method}({_right})";
+            return _method.ToString($"{_right}");
         }
         public INode<T> RightNode
         {
