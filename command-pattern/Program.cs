@@ -32,7 +32,7 @@ namespace CommandPattern
             user.Apply(Operation.MULTIPLY, 3.14);
 
             PrintMessage("Check trigonometric evaluation:");
-            INode<double> V = new Value<double>(Math.PI/3.0);
+            INode<double> V = new Value<double>(Math.PI / 3.0);
             INode<double> SinOp = (doubleFactory as ITrigonometryFactory<double>).GetSinOperation(V);
             Console.WriteLine($"compute {SinOp} = {SinOp.Compute()}");
             INode<double> Pow2SinOp = (doubleFactory as IFunctionFactory<double>).GetPow2Operation(SinOp);
