@@ -22,26 +22,28 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder = "")
         {
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParam"] = sortOrder == "date" ? "date_desc" : "date";
+
             IQueryable<Student> students =
                 from s in _context.Students
                 select s;
 
-            sortOrder = String.IsNullOrEmpty(sortOrder) ? "desc" : sortOrder;
-            Expression<Func<Student, object>> sortProperty = (Student s) => s.LastName;
+            Expression<Func<Student, object>> sortExpression = (Student s) => s.LastName;
             if (sortOrder.Contains("date"))
             {
-                sortProperty = (Student s) => s.EnrollmentDate;
+                sortExpression = (Student s) => s.EnrollmentDate;
             }
 
             if (sortOrder.Contains("desc"))
             {
-                students = students.OrderByDescending(sortProperty);
+                students = students.OrderByDescending(sortExpression);
             }
             else
             {
-                students = students.OrderBy(sortProperty);
+                students = students.OrderBy(sortExpression);
             }
 
             return View(await students.ToListAsync());
