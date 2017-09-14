@@ -2,8 +2,17 @@ namespace CommandPattern
 {
     public class DecimalFactory : GenericFactory<decimal>, INumericFactory<decimal>
     {
-        public DecimalFactory()
+        private static DecimalFactory _factory;
+        private DecimalFactory()
         {
+        }
+        public static DecimalFactory GetInstance()
+        {
+            if (_factory == null)
+            {
+                _factory = new DecimalFactory();
+            }
+            return _factory;
         }
         public INode<decimal> GetAddOperation(INode<decimal> first, INode<decimal> second)
         {

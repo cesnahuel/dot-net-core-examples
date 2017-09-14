@@ -9,7 +9,7 @@ namespace CommandPattern
         public static void Main(string[] args)
         {
             PrintMessage("Example with decimal values:");
-            DecimalFactory decimalFactory = new DecimalFactory();
+            DecimalFactory decimalFactory = DecimalFactory.GetInstance();
 
             Value<decimal> V1 = new Value<decimal>(1.3M);
             Value<decimal> V2 = new Value<decimal>(3.8M);
@@ -31,7 +31,7 @@ namespace CommandPattern
             user.Apply(Operation.MULTIPLY, 3.14);
 
             PrintMessage("Check trigonometric evaluation:");
-            IFactory<double> doubleFactory = new DoubleFactory();
+            IFactory<double> doubleFactory = DoubleFactory.GetInstance();
 
             INode<double> V = new Value<double>(Math.PI / 3.0);
             INode<double> SinOp = (doubleFactory as ITrigonometryFactory<double>).GetSinOperation(V);

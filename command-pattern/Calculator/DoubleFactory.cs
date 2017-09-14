@@ -5,8 +5,17 @@ namespace CommandPattern
 {
     public class DoubleFactory : GenericFactory<double>, INumericFactory<double>, ITrigonometryFactory<double>, IFunctionFactory<double>
     {
-        public DoubleFactory()
+        private static DoubleFactory _factory = null;
+        private DoubleFactory()
         {
+        }
+        public static DoubleFactory GetInstance()
+        {
+            if (_factory == null)
+            {
+                _factory = new DoubleFactory();
+            }
+            return _factory;
         }
         public INode<double> GetAddOperation(INode<double> first, INode<double> second)
         {

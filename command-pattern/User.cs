@@ -48,10 +48,10 @@ namespace CommandPattern
             switch (typeName)
             {
                 case "double":
-                    _factory = new DoubleFactory() as IFactory<T>;
+                    _factory = DoubleFactory.GetInstance() as IFactory<T>;
                     break;
                 case "decimal":
-                    _factory = new DecimalFactory() as IFactory<T>;
+                    _factory = DecimalFactory.GetInstance() as IFactory<T>;
                     break;
                 default:
                     throw new NotSupportedException($"No factory found for type name '{typeName}'");
