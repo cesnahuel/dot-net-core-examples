@@ -37,12 +37,25 @@ namespace CommandPattern
         private uint _level;
         private LinkedList<ICommand> _history;
         private IFactory<T> _factory;
-        public User(IFactory<T> factory)
+        public User()
         {
             _calculator = new Calculator<T>();
             _history = new LinkedList<ICommand>();
             _level = 0;
-            _factory = factory;
+
+            // Guess the correct factory from type
+            string typeName = typeof(T).Name.ToLower();
+            switch (typeName)
+            {
+                case "double":
+                    _factory = new DoubleFactory() as IFactory<T>;
+                    break;
+                case "decimal":
+                    _factory = new DecimalFactory() as IFactory<T>;
+                    break;
+                default:
+                    throw new NotSupportedException($"No factory found for type name '{typeName}'");
+            }
         }
         public void SetValue(T value)
         {

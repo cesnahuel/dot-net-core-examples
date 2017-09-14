@@ -24,23 +24,28 @@ namespace CommandPattern
             Console.WriteLine($"compute {MulOp} = {MulOp.Compute()}");
 
             PrintMessage("Calculator example with double values:");
-            IFactory<double> doubleFactory = new DoubleFactory();
-            User<double> user = new User<double>(doubleFactory);
+            User<double> user = new User<double>();
             // user.SetValue(3.14);
             user.Apply(Operation.ADD, 0.14);
             user.Apply(Operation.ADD, 1.06);
             user.Apply(Operation.MULTIPLY, 3.14);
 
             PrintMessage("Check trigonometric evaluation:");
+            IFactory<double> doubleFactory = new DoubleFactory();
+
             INode<double> V = new Value<double>(Math.PI / 3.0);
             INode<double> SinOp = (doubleFactory as ITrigonometryFactory<double>).GetSinOperation(V);
             Console.WriteLine($"compute {SinOp} = {SinOp.Compute()}");
+
             INode<double> Pow2SinOp = (doubleFactory as IFunctionFactory<double>).GetPow2Operation(SinOp);
             Console.WriteLine($"compute {Pow2SinOp} = {Pow2SinOp.Compute()}");
+
             INode<double> CosOp = (doubleFactory as ITrigonometryFactory<double>).GetCosOperation(V);
             Console.WriteLine($"compute {CosOp} = {CosOp.Compute()}");
+
             INode<double> Pow2CosOp = (doubleFactory as IFunctionFactory<double>).GetPow2Operation(CosOp);
             Console.WriteLine($"compute {Pow2CosOp} = {Pow2CosOp.Compute()}");
+
             INode<double> TrigAddOp = (doubleFactory as INumericFactory<double>).GetAddOperation(Pow2CosOp, Pow2SinOp);
             Console.WriteLine($"compute {TrigAddOp} = {TrigAddOp.Compute()}");
         }
