@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,13 +22,27 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index(string sortColumn, string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder)
         {
             IQueryable<Student> students =
                 from s in _context.Students
                 select s;
 
             sortOrder = String.IsNullOrEmpty(sortOrder) ? "desc" : sortOrder;
+            Expression<Func<Student, object>> sortProperty = (Student s) => s.LastName;
+            if (sortOrder.Contains("date"))
+            {
+                sortProperty = (Student s) => s.EnrollmentDate;
+            }
+
+            if (sortOrder.Contains("desc"))
+            {
+                students = students.OrderByDescending(sortProperty);
+            }
+            else
+            {
+                students = students.OrderBy(sortProperty);
+            }
 
             return View(await students.ToListAsync());
         }
