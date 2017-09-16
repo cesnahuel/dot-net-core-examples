@@ -22,15 +22,23 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index(string sortOrder = "")
+        public async Task<IActionResult> Index(string searchField, string sortOrder = "")
         {
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParam"] = sortOrder == "date" ? "date_desc" : "date";
+            ViewData["FilterParam"] = searchField;
 
             IQueryable<Student> students =
                 from s in _context.Students
                 select s;
-
+            if (!String.IsNullOrEmpty(searchField))
+            {
+                students = students.Where(
+                    s => new string[] { s.FirstMidName, s.LastName }.Any(
+                        f => f.ToUpper().Contains(searchField.ToUpper())
+                    )
+                );
+            }
             Expression<Func<Student, object>> sortExpression = (Student s) => s.LastName;
             if (sortOrder.Contains("date"))
             {
@@ -62,6 +70,7 @@ namespace ContosoUniversity.Controllers
                 .ThenInclude(e => e.Course)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.StudentId == id);
+
             if (student == null)
             {
                 return NotFound();
