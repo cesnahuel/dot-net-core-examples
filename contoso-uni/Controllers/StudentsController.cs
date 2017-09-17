@@ -22,10 +22,23 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index(string searchField, string sortOrder = "")
+        public async Task<IActionResult> Index(string searchField, string currentFilter, int? page, string sortOrder = "")
         {
+            int pageSize = 3;
+
+            ViewData["CurrentSortOrder"] = sortOrder;
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParam"] = sortOrder == "date" ? "date_desc" : "date";
+
+            if (searchField != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchField = currentFilter;
+            }
+
             ViewData["FilterParam"] = searchField;
 
             IQueryable<Student> students =
@@ -54,7 +67,7 @@ namespace ContosoUniversity.Controllers
                 students = students.OrderBy(sortExpression);
             }
 
-            return View(await students.ToListAsync());
+            return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         // GET: Student/Details/5

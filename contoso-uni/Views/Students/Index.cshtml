@@ -1,4 +1,6 @@
-@model IEnumerable<ContosoUniversity.Models.Student>
+@using ContosoUniversity
+@using ContosoUniversity.Models
+@model IEnumerable<Student>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,11 +14,12 @@
 
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
-        <p>
-            Find by name: <input type="text" name="searchField" value="@ViewData["FilterParam"]">
-            <input type="submit" class="btn btn-default"> |
-            <a asp-action="Index">Back to Full List</a>
-        </p>
+            <div class="form-group">
+                Find by name:
+                <input type="text" style="width: auto; display: inline;" class="form-control" placeholder="First or Last Name" name="searchField" value="@ViewData["FilterParam"]">
+                <input type="submit" class="btn btn-default"> |
+                <a asp-action="Index">Back to Full List</a>
+            </div>
     </div>
 </form>
 
@@ -57,3 +60,23 @@
     }
     </tbody>
 </table>
+
+@{
+    PaginatedList<Student> PaginatedModel = Model as PaginatedList<Student>;
+    string prevDisabled = !PaginatedModel.HasPreviousPage ? "disabled" : "";
+    string nextDisabled = !PaginatedModel.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSortOrder"]"
+   asp-route-page="@(PaginatedModel.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["FilterParam"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSortOrder"]"
+   asp-route-page="@(PaginatedModel.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["FilterParam"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
