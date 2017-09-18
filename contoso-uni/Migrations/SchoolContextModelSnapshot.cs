@@ -61,10 +61,12 @@ namespace contosouni.Migrations
                     b.Property<DateTime>("EnrollmentDate");
 
                     b.Property<string>("FirstMidName")
+                        .IsRequired()
                         .HasColumnName("FirstName")
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.HasKey("StudentId");
