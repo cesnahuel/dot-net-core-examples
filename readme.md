@@ -1,12 +1,12 @@
-# .Net Core 2.0 examples
+# .Net Core 2.0 examples #
 
-## Create new console based project
+## Create new console based project ##
 
     mkdir dot-net-core-sqlite
     cd dot-net-core-sqlite
     dotnet new console
 
-## Add Entity Framework (EF) Core providers
+## Add Entity Framework (EF) Core providers ##
 
     dotnet add package Microsoft.EntityFrameworkCore.Sqlite
     dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -19,7 +19,7 @@ EF Core includes an additional set of commands for the dotnet CLI, starting with
 
 Therefore, manually append `Microsoft.EntityFrameworkCore.Tools.DotNet` to DotNetCliToolReference in `dot-net-core-sqlite.csproj` file.
 
-## Download dependencies
+## Download dependencies ##
 
     dotnet restore
 
@@ -27,7 +27,7 @@ Therefore, manually append `Microsoft.EntityFrameworkCore.Tools.DotNet` to DotNe
 
     dotnet build
 
-## Create the database
+## Create the database ##
 
 Run the following command to create initial Migrations
 
@@ -37,6 +37,8 @@ Apply the migration changes to the database
 
     dotnet ef database update
 
-## Run it
+## Run it ##
 
-    dotnet run
+From the fish shell start the project in development mode in the watch mode
+
+    env ASPNETCORE_ENVIRONMENT='Development'  dotnet watch run
