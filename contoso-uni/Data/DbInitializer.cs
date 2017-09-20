@@ -35,6 +35,26 @@ namespace ContosoUniversity.Data
             }
             await context.SaveChangesAsync();
 
+            var instructors = new Instructor[]
+            {
+                new Instructor { FirstMidName = "Kim",     LastName = "Abercrombie",
+                    HireDate = DateTime.Parse("1995-03-11") },
+                new Instructor { FirstMidName = "Fadi",    LastName = "Fakhouri",
+                    HireDate = DateTime.Parse("2002-07-06") },
+                new Instructor { FirstMidName = "Roger",   LastName = "Harui",
+                    HireDate = DateTime.Parse("1998-07-01") },
+                new Instructor { FirstMidName = "Candace", LastName = "Kapoor",
+                    HireDate = DateTime.Parse("2001-01-15") },
+                new Instructor { FirstMidName = "Roger",   LastName = "Zheng",
+                    HireDate = DateTime.Parse("2004-02-12") }
+            };
+
+            foreach (Instructor i in instructors)
+            {
+                context.Instructors.Add(i);
+            }
+            await context.SaveChangesAsync();
+
             var courses = new Course[]
             {
                 new Course { CourseId=1050, Title="Chemistry", Credits=3 },
