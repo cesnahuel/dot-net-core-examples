@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace contosouni.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class ComplexDataModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
