@@ -18,4 +18,4 @@ Restore the newly added package
 
 so that afterwards `aspnet-codegenerator` can be used to create `Student` controller code with corresponding views:
 
-    dotnet aspnet-codegenerator controller -name StudentController -m Student -dc SchoolContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+    dotnet aspnet-codegenerator controller -name StudentsController -m Student -dc SchoolContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
