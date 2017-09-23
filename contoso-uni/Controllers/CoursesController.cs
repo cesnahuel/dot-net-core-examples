@@ -50,7 +50,7 @@ namespace contoso_uni.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentId");
+            ViewData["Department"] = new SelectList(_context.Departments, "DepartmentId", "Name");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace contoso_uni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentId", course.DepartmentId);
+            ViewData["Department"] = new SelectList(_context.Departments, "DepartmentId", "Name", course.DepartmentId);
             return View(course);
         }
 
