@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
@@ -64,20 +64,18 @@ namespace contosouni.Migrations
                 name: "office_assignments",
                 columns: table => new
                 {
-                    InstructorId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    InstructorId1 = table.Column<int>(type: "INTEGER", nullable: true),
+                    InstructorId = table.Column<int>(type: "INTEGER", nullable: false),
                     Location = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_office_assignments", x => x.InstructorId);
                     table.ForeignKey(
-                        name: "FK_office_assignments_instructors_InstructorId1",
-                        column: x => x.InstructorId1,
+                        name: "FK_office_assignments_instructors_InstructorId",
+                        column: x => x.InstructorId,
                         principalTable: "instructors",
                         principalColumn: "InstructorId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,11 +173,6 @@ namespace contosouni.Migrations
                 name: "IX_enrollments_StudentId",
                 table: "enrollments",
                 column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_office_assignments_InstructorId1",
-                table: "office_assignments",
-                column: "InstructorId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
