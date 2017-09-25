@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace ContosoUniversity
+namespace ContosoUniversity.Models
 {
     public class OfficeAssignment
     {

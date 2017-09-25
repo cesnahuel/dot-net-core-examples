@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace ContosoUniversity
+namespace ContosoUniversity.Models
 {
     public class Instructor
     {
@@ -20,5 +21,15 @@ namespace ContosoUniversity
         [DataType(DataType.Date)]
         [Display(Name = "Hire Date")]
         public DateTime HireDate { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get { return $"{LastName}, {FirstMidName}"; }
+        }
+
+        [Display(Name = "Course Assignments")]
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
+        [Display(Name = "Office Location")]
+        public OfficeAssignment OfficeAssignment { get; set; }
     }
 }

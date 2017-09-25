@@ -1,4 +1,4 @@
-@model ContosoUniversity.Instructor
+@model ContosoUniversity.Models.Instructor
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,7 +30,7 @@
             @Html.DisplayFor(model => model.HireDate)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="InstructorId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
