@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity;
 using ContosoUniversity.Data;
+using ContosoUniversity.Models;
+using ContosoUniversity.Models.SchoolViewModels;
+
 
 namespace contoso_uni.Controllers
 {
@@ -20,9 +23,42 @@ namespace contoso_uni.Controllers
         }
 
         // GET: Instructors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id, int? courseId)
         {
-            return View(await _context.Instructors.ToListAsync());
+            InstructorIndexData viewModel = new InstructorIndexData();
+            viewModel.Instructors = await _context.Instructors
+                .Include(i => i.OfficeAssignment)
+                .Include(i => i.CourseAssignments)
+                    .ThenInclude(c => c.Course)
+                        .ThenInclude(c => c.Enrollments)
+                            .ThenInclude(e => e.Student)
+                .Include(i => i.CourseAssignments)
+                    .ThenInclude(c => c.Course)
+                        .ThenInclude(c => c.Enrollments)
+                .OrderBy(i => i.LastName)
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (id != null)
+            {
+                ViewData["InstructorId"] = id.Value;
+                Instructor instructor = viewModel.Instructors
+                    .Where(i => i.InstructorId == id.Value)
+                    .Single();
+                viewModel.Courses = instructor.CourseAssignments
+                    .Select(ca => ca.Course);
+            }
+
+            if (courseId != null)
+            {
+                ViewData["CourseId"] = courseId.Value;
+                viewModel.Enrollments = viewModel.Courses
+                    .Where(c => c.CourseId == courseId.Value)
+                    .Single()
+                    .Enrollments;
+            }
+
+            return View(viewModel);
         }
 
         // GET: Instructors/Details/5
@@ -50,7 +86,7 @@ namespace contoso_uni.Controllers
         }
 
         // POST: Instructors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -82,7 +118,7 @@ namespace contoso_uni.Controllers
         }
 
         // POST: Instructors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

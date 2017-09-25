@@ -1,10 +1,14 @@
-@model IEnumerable<ContosoUniversity.Instructor>
+@model ContosoUniversity.Models.SchoolViewModels.InstructorIndexData
+
+@using ContosoUniversity.Models;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Instructors";
+    // create Instructor dummy instance for DysplayNameFor
+    Instructor instructorModel = null;
 }
 
-<h2>Index</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,20 +17,33 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    @Html.DisplayNameFor(model => instructorModel.LastName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstMidName)
+                    @Html.DisplayNameFor(model => instructorModel.FirstMidName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.HireDate)
+                    @Html.DisplayNameFor(model => instructorModel.HireDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => instructorModel.OfficeAssignment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => instructorModel.CourseAssignments)
                 </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@foreach (var item in Model.Instructors)
+{
+    string selectedRow = "";
+    // Cast object to Nullable<int>
+    if (item.InstructorId == (int?)ViewData["InstructorId"])
+    {
+        selectedRow = "class=success";
+    }
+        <tr @selectedRow>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
@@ -37,6 +54,20 @@
                 @Html.DisplayFor(modelItem => item.HireDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.OfficeAssignment.Location)
+            </td>
+            <td>
+                @foreach (var course in item.CourseAssignments)
+                {
+                    @Html.DisplayFor(modelItem => course.Course.CourseId)
+                    // Apply text tag for wiriting text
+                    <text>: </text>
+                    @Html.DisplayFor(modelItem => course.Course.Title)
+                    <br/>
+                }
+            </td>
+            <td>
+                <a asp-action="Index" asp-route-id="@item.InstructorId">Select</a> |
                 <a asp-action="Edit" asp-route-id="@item.InstructorId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.InstructorId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.InstructorId">Delete</a>
