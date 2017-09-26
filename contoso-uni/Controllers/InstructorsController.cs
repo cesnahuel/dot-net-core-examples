@@ -34,7 +34,7 @@ namespace contoso_uni.Controllers
                             .ThenInclude(e => e.Student)
                 .Include(i => i.CourseAssignments)
                     .ThenInclude(c => c.Course)
-                        .ThenInclude(c => c.Enrollments)
+                        .ThenInclude(c => c.Department)
                 .OrderBy(i => i.LastName)
                 .AsNoTracking()
                 .ToListAsync();
@@ -43,8 +43,9 @@ namespace contoso_uni.Controllers
             {
                 ViewData["InstructorId"] = id.Value;
                 Instructor instructor = viewModel.Instructors
-                    .Where(i => i.InstructorId == id.Value)
-                    .Single();
+                    .Single(i => i.InstructorId == id.Value);
+                    //.Where(i => i.InstructorId == id.Value)
+                    //.Single();
                 viewModel.Courses = instructor.CourseAssignments
                     .Select(ca => ca.Course);
             }
@@ -53,8 +54,7 @@ namespace contoso_uni.Controllers
             {
                 ViewData["CourseId"] = courseId.Value;
                 viewModel.Enrollments = viewModel.Courses
-                    .Where(c => c.CourseId == courseId.Value)
-                    .Single()
+                    .Single(c => c.CourseId == courseId.Value)
                     .Enrollments;
             }
 
