@@ -60,8 +60,9 @@
                 @foreach (var course in item.CourseAssignments)
                 {
                     @Html.DisplayFor(modelItem => course.Course.CourseId)
-                    // Apply text tag for wiriting text
-                    <text>: </text>
+                    // Apply text tag for inserting text (space in this context)
+                    // or alternatively use razor syntax "@: "
+                    <text> </text>
                     @Html.DisplayFor(modelItem => course.Course.Title)
                     <br/>
                 }
