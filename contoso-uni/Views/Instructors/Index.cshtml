@@ -6,6 +6,7 @@
     ViewData["Title"] = "Instructors";
     // create Instructor dummy instance for DysplayNameFor
     Instructor instructorModel = null;
+    Course courseModel = null;
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -77,3 +78,37 @@
 }
     </tbody>
 </table>
+@if (Model.Courses != null)
+{
+    <h3>Courses Taught by Selected Instructor</h3>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>@Html.DisplayNameFor(model => courseModel.CourseId)</th>
+            <th>@Html.DisplayNameFor(model => courseModel.Title)</th>
+            <th>@Html.DisplayNameFor(model => courseModel.Department)</th>
+        </tr>
+        @foreach (var item in Model.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseId == (int?)ViewData["CourseId"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    <a asp-action="Index" asp-route-courseId="@item.CourseId">Select</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.Name)
+                </td>
+            </tr>
+        }
+    </table>
+}
