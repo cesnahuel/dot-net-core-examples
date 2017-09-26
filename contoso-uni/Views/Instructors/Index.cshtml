@@ -4,9 +4,11 @@
 
 @{
     ViewData["Title"] = "Instructors";
-    // create Instructor dummy instance for DysplayNameFor
+    // create dummy instances for DysplayNameFor
     Instructor instructorModel = null;
     Course courseModel = null;
+    Enrollment enrollmentModel = null;
+    Student studentModel = null;
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -107,6 +109,29 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Department.Name)
+                </td>
+            </tr>
+        }
+    </table>
+}
+@if (Model.Enrollments != null)
+{
+    <h3>
+        Students Enrolled in Selected Course
+    </h3>
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => studentModel.FullName)</th>
+            <th>@Html.DisplayNameFor(model => enrollmentModel.Grade)</th>
+        </tr>
+        @foreach (var item in Model.Enrollments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
                 </td>
             </tr>
         }

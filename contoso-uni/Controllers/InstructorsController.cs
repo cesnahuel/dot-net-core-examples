@@ -44,8 +44,6 @@ namespace contoso_uni.Controllers
                 ViewData["InstructorId"] = id.Value;
                 Instructor instructor = viewModel.Instructors
                     .Single(i => i.InstructorId == id.Value);
-                    //.Where(i => i.InstructorId == id.Value)
-                    //.Single();
                 viewModel.Courses = instructor.CourseAssignments
                     .Select(ca => ca.Course);
             }
