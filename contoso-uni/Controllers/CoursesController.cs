@@ -47,10 +47,25 @@ namespace contoso_uni.Controllers
             return View(course);
         }
 
-        // GET: Courses/Create
-        public IActionResult Create()
+        private async Task PopulateDepartmentsDropDownList(object selectedDepartment = null)
         {
-            ViewData["Department"] = new SelectList(_context.Departments, "DepartmentId", "Name");
+            IOrderedQueryable<Department> departments =
+                from d in _context.Departments
+                orderby d.Name
+                select d;
+
+            ViewBag.DepartmentId = new SelectList(
+                await departments.AsNoTracking().ToListAsync(),
+                "DepartmentId",
+                "Name",
+                selectedDepartment
+            );
+        }
+
+        // GET: Courses/Create
+        public async Task<IActionResult> Create()
+        {
+            await PopulateDepartmentsDropDownList();
             return View();
         }
 
@@ -67,7 +82,7 @@ namespace contoso_uni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Department"] = new SelectList(_context.Departments, "DepartmentId", "Name", course.DepartmentId);
+            await PopulateDepartmentsDropDownList(course.DepartmentId);
             return View(course);
         }
 
