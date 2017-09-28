@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 
+
 namespace contoso_uni.Controllers
 {
     public class CoursesController : Controller
@@ -70,11 +71,13 @@ namespace contoso_uni.Controllers
         }
 
         // POST: Courses/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // To protect from overposting attacks, please enable the specific
+        // properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,Title,Credits,DepartmentId")] Course course)
+        public async Task<IActionResult> Create(
+            [Bind("CourseId,Title,Credits,DepartmentId")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -99,16 +102,18 @@ namespace contoso_uni.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", course.DepartmentId);
+            await PopulateDepartmentsDropDownList(course.DepartmentId);
             return View(course);
         }
 
         // POST: Courses/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // To protect from overposting attacks, please enable the specific
+        // properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,Title,Credits,DepartmentId")] Course course)
+        public async Task<IActionResult> Edit(
+            int id, [Bind("CourseId,Title,Credits,DepartmentId")] Course course)
         {
             if (id != course.CourseId)
             {
@@ -124,7 +129,7 @@ namespace contoso_uni.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.CourseId))
+                    if (!await CourseExists(course.CourseId))
                     {
                         return NotFound();
                     }
@@ -135,7 +140,7 @@ namespace contoso_uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentId", course.DepartmentId);
+            await PopulateDepartmentsDropDownList(course.DepartmentId);
             return View(course);
         }
 
@@ -169,9 +174,9 @@ namespace contoso_uni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+        private async Task<bool> CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            return await _context.Courses.AnyAsync(e => e.CourseId == id);
         }
     }
 }
