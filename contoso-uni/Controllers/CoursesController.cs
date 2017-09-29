@@ -97,7 +97,9 @@ namespace contoso_uni.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.SingleOrDefaultAsync(m => m.CourseId == id);
+            var course = await _context.Courses
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -154,6 +156,7 @@ namespace contoso_uni.Controllers
 
             var course = await _context.Courses
                 .Include(c => c.Department)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
