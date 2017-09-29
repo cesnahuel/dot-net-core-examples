@@ -107,7 +107,10 @@ namespace contoso_uni.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.SingleOrDefaultAsync(m => m.InstructorId == id);
+            var instructor = await _context.Instructors
+                .Include(i => i.OfficeAssignment)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
                 return NotFound();
@@ -116,18 +119,34 @@ namespace contoso_uni.Controllers
         }
 
         // POST: Instructors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // To protect from overposting attacks, please enable the specific properties
+        // you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,LastName,FirstMidName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> EditPost(int? id)
         {
-            if (id != instructor.InstructorId)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.OfficeAssignment)
+                .SingleOrDefaultAsync(m => m.InstructorId == id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+            bool valid = await TryUpdateModelAsync<Instructor>(
+                instructor,
+                "",
+                i => i.InstructorId,
+                i => i.LastName,
+                i => i.FirstMidName,
+                i => i.HireDate,
+                i => i.OfficeAssignment
+            );
+            if (ModelState.IsValid && valid)
             {
                 try
                 {
