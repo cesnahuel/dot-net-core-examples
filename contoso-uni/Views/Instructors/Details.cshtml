@@ -28,6 +28,23 @@
         <dd>
             @Html.DisplayFor(model => model.HireDate)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OfficeAssignment.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OfficeAssignment.Location)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseAssignments)
+        </dt>
+        <dd>
+            @foreach (var courseAssignment in Model.CourseAssignments)
+            {
+                @Html.DisplayFor(modelItem => courseAssignment.Course.CourseId)
+                @: @Html.DisplayFor(modelItem => courseAssignment.Course.Title)
+                <br />
+            }
+        </dd>
     </dl>
 </div>
 <div>

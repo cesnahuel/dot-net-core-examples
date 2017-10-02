@@ -68,18 +68,24 @@ namespace contoso_uni.Controllers
             }
 
             var instructor = await _context.Instructors
+                .Include(m => m.OfficeAssignment)
+                .Include(m => m.CourseAssignments)
+                    .ThenInclude(ca => ca.Course)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
                 return NotFound();
             }
-
             return View(instructor);
         }
 
         // GET: Instructors/Create
         public IActionResult Create()
         {
+            Instructor instructor = new Instructor();
+            instructor.CourseAssignments = new List<CourseAssignment>();
+            PopulateAssignedCourseData(instructor);
             return View();
         }
 
@@ -109,12 +115,15 @@ namespace contoso_uni.Controllers
 
             var instructor = await _context.Instructors
                 .Include(i => i.OfficeAssignment)
+                .Include(i => i.CourseAssignments)
+                    .ThenInclude(ca => ca.Course)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
                 return NotFound();
             }
+            PopulateAssignedCourseData(instructor);
             return View(instructor);
         }
 
@@ -132,6 +141,8 @@ namespace contoso_uni.Controllers
             }
             Instructor instructor = await _context.Instructors
                 .Include(i => i.OfficeAssignment)
+                .Include(i => i.CourseAssignments)
+                    .ThenInclude(ca => ca.Course)
                 .SingleOrDefaultAsync(m => m.InstructorId == id);
             if (instructor == null)
             {
@@ -148,6 +159,10 @@ namespace contoso_uni.Controllers
             );
             if (ModelState.IsValid && valid)
             {
+                if (String.IsNullOrWhiteSpace(instructor.OfficeAssignment?.Location))
+                {
+                    instructor.OfficeAssignment = null;
+                }
                 try
                 {
                     _context.Update(instructor);
@@ -155,7 +170,7 @@ namespace contoso_uni.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstructorExists(instructor.InstructorId))
+                    if (!await InstructorExists(instructor.InstructorId))
                     {
                         return NotFound();
                     }
@@ -167,6 +182,25 @@ namespace contoso_uni.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(instructor);
+        }
+
+        private void PopulateAssignedCourseData(Instructor instructor)
+        {
+            var allCourses = _context.Courses;
+            var instructorCourses = new HashSet<int>(
+                instructor.CourseAssignments.Select(c => c.CourseId)
+            );
+            var viewModel = new List<AssignedCourseData>();
+            foreach (var course in allCourses)
+            {
+                viewModel.Add(new AssignedCourseData
+                {
+                    CourseId = course.CourseId,
+                    Title = course.Title,
+                    Assigned = instructorCourses.Contains(course.CourseId)
+                });
+            }
+            ViewData["Courses"] = viewModel;
         }
 
         // GET: Instructors/Delete/5
@@ -198,9 +232,9 @@ namespace contoso_uni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InstructorExists(int id)
+        private async Task<bool> InstructorExists(int id)
         {
-            return _context.Instructors.Any(e => e.InstructorId == id);
+            return await _context.Instructors.AnyAsync(e => e.InstructorId == id);
         }
     }
 }
