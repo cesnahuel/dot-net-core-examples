@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -129,7 +131,7 @@ namespace contoso_uni.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id)
+        public async Task<IActionResult> EditPost(int? id, string[] selectedCourses)
         {
             if (id == null)
             {
@@ -153,6 +155,7 @@ namespace contoso_uni.Controllers
                 i => i.HireDate,
                 i => i.OfficeAssignment
             );
+            UpdateInstructorCourses(selectedCourses, instructor);
             if (ModelState.IsValid && valid)
             {
                 if (String.IsNullOrWhiteSpace(instructor.OfficeAssignment?.Location))
@@ -177,17 +180,56 @@ namespace contoso_uni.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            PopulateAssignedCourseData(instructor);
             return View(instructor);
         }
 
+        private void UpdateInstructorCourses(string[] selectedCourses, Instructor instructor)
+        {
+            if (selectedCourses == null)
+            {
+                instructor.CourseAssignments = new List<CourseAssignment>();
+                return;
+            }
+            var selectedCoursesIds = new HashSet<int>(
+                selectedCourses.Select(i => int.Parse(i))
+            );
+            var instructorCourses = new HashSet<int>(
+                instructor.CourseAssignments.Select(c => c.Course.CourseId)
+            );
+            foreach (var course in _context.Courses)
+            {
+                if (selectedCoursesIds.Contains(course.CourseId))
+                {
+                    if (!instructorCourses.Contains(course.CourseId))
+                    {
+                        instructor.CourseAssignments.Add(
+                            new CourseAssignment
+                            {
+                                InstructorId = instructor.InstructorId,
+                                CourseId = course.CourseId
+                            });
+                    }
+                }
+                else
+                {
+                    if (instructorCourses.Contains(course.CourseId))
+                    {
+                        CourseAssignment courseToRemove = instructor
+                            .CourseAssignments
+                            .SingleOrDefault(i => i.CourseId == course.CourseId);
+                        _context.Remove(courseToRemove);
+                    }
+                }
+            }
+        }
         private void PopulateAssignedCourseData(Instructor instructor)
         {
-            var allCourses = _context.Courses;
-            var instructorCourses = new HashSet<int>(
+            HashSet<int> instructorCourses = new HashSet<int>(
                 instructor.CourseAssignments.Select(c => c.CourseId)
             );
             var viewModel = new List<AssignedCourseData>();
-            foreach (var course in allCourses)
+            foreach (var course in _context.Courses)
             {
                 viewModel.Add(new AssignedCourseData
                 {
